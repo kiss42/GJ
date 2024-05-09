@@ -1,0 +1,46 @@
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Game {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  title       String   @unique
+  description String
+  votes       Int      @default(0)
+  Vote        Vote[]
+  Review      Review[] // Associate reviews with games
+}
+
+model Vote {
+  id      String @id @default(auto()) @map("_id") @db.ObjectId
+  gameId  String
+  userId  String
+  Game    Game   @relation(fields: [gameId], references: [id])
+}
+
+model Review {
+  id        String @id @default(auto()) @map("_id") @db.ObjectId
+  content   String
+  rating    Int    @default(0)
+  userId    String
+  gameId    String
+  Game      Game   @relation(fields: [gameId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+GameLobby Model
+{
+    id: String,
+    gameName: String,
+    startTime: Date,
+    maxParticipants: Number,
+    participants: Array of User IDs,
+    createdBy: User ID
+}
+
