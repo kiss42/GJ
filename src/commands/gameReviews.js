@@ -24,7 +24,7 @@ function createGameDetailEmbed(game, reviewContent, rating) {
 function createGameSelectMenu(games) {
     const gameOptions = games.map(game => ({
         label: game.name.length > 100 ? `${game.name.substring(0, 97)}...` : game.name,
-        description: game.description && game.description.length > 100 ? `${game.description.substring(0, 97)}...` : game.description || 'No description available',
+        description: game.summary && game.summary.length > 100 ? `${game.summary.substring(0, 97)}...` : game.summary || 'No description available',
         value: game.id.toString()
     }));
 
@@ -47,7 +47,15 @@ module.exports = {
 
     async execute(interaction) {
         await interaction.deferReply({ ephemeral: true });
-        const gameTitle = interaction.options.getString('title');
+        // Accept either "title" (current) or "query" (older registered slash command) for compatibility
+        const gameTitleRaw = interaction.options.getString('title') || interaction.options.getString('query');
+        const gameTitle = gameTitleRaw ? gameTitleRaw.trim() : '';
+        console.log('[gamereviews] options received:', interaction.options.data);
+
+        if (!gameTitle) {
+            await interaction.editReply({ content: 'Please provide a game title to review.', ephemeral: true });
+            return;
+        }
         let games = await fetchGames(gameTitle);
 
         games = searchGames(games, gameTitle);

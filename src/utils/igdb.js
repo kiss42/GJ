@@ -17,6 +17,13 @@ if (!client_id || !accessToken) {
  * @returns {Promise<Array>} A promise that resolves to an array of game objects.
  */
 async function fetchGames(query, imageSize = 'cover_big') {
+    const searchTerm = (query || '').trim();
+
+    if (!searchTerm || searchTerm.toLowerCase() === 'null') {
+        console.error('fetchGames called without a valid search term:', query);
+        return [];
+    }
+
     try {
         const response = await axios({
             url: "https://api.igdb.com/v4/games/",
@@ -26,7 +33,7 @@ async function fetchGames(query, imageSize = 'cover_big') {
                 'Client-ID': client_id,
                 'Authorization': `Bearer ${accessToken}`,
             },
-            data: `search "${query}"; fields name, summary, cover.image_id, first_release_date, platforms.name, websites.url, videos.video_id, screenshots.image_id; limit 25;`
+            data: `search "${searchTerm}"; fields id, name, summary, cover.image_id, first_release_date, platforms.name, websites.url, videos.video_id, screenshots.image_id; limit 25;`
         });
 
         if (!response.data || !Array.isArray(response.data)) {

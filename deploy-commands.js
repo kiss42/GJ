@@ -1,6 +1,4 @@
-const { SlashCommandBuilder } = require('@discordjs/builders');
-const { REST } = require('@discordjs/rest');
-const { Routes } = require('discord-api-types/v9');
+const { REST, Routes } = require('discord.js');
 const fs = require('fs');
 require('dotenv').config();
 
@@ -13,7 +11,12 @@ for (const file of commandFiles) {
   commands.push(command.data.toJSON());
 }
 
-const rest = new REST({ version: '9' }).setToken(process.env.DISCORD_TOKEN);
+if (!process.env.CLIENT_ID || !process.env.GUILD_ID) {
+  console.error('CLIENT_ID and GUILD_ID must be set in .env to deploy commands.');
+  process.exit(1);
+}
+
+const rest = new REST({ version: '10' }).setToken(process.env.DISCORD_TOKEN);
 
 (async () => {
   try {

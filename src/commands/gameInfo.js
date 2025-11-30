@@ -20,7 +20,16 @@ module.exports = {
 
     async execute(interaction) {
         await interaction.deferReply({ ephemeral: false });
-        const gameTitle = interaction.options.getString('title');
+        // Accept either "title" (current) or "query" (older registered slash command) for compatibility
+        const gameTitleRaw = interaction.options.getString('title') || interaction.options.getString('query');
+        const gameTitle = gameTitleRaw ? gameTitleRaw.trim() : '';
+
+        console.log('[gameinfo] options received:', interaction.options.data);
+
+        if (!gameTitle) {
+            await interaction.editReply({ content: 'Please provide a game title to search for.' });
+            return;
+        }
         
         try {
             const games = await fetchGames(gameTitle);

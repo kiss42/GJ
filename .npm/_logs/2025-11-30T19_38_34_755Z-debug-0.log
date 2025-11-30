@@ -1,0 +1,17 @@
+0 verbose cli /usr/local/bin/node /usr/local/bin/npm
+1 info using npm@10.9.2
+2 info using node@v22.14.0
+3 silly config load:file:/usr/local/lib/node_modules/npm/npmrc
+4 silly config load:file:/Users/stevenpierre/Desktop/coding/GJ/.npmrc
+5 silly config load:file:/usr/local/etc/npmrc
+6 verbose title npm exec prisma generate
+7 verbose argv "exec" "prisma" "generate"
+8 verbose logfile logs-max:10 dir:/Users/stevenpierre/Desktop/coding/GJ/.npm/_logs/2025-11-30T19_38_34_755Z-
+9 verbose logfile /Users/stevenpierre/Desktop/coding/GJ/.npm/_logs/2025-11-30T19_38_34_755Z-debug-0.log
+10 silly logfile done cleaning log files
+11 verbose cwd /Users/stevenpierre/Desktop/coding/GJ
+12 verbose os Darwin 24.6.0
+13 verbose node v22.14.0
+14 verbose npm  v10.9.2
+15 verbose exit 0
+16 info ok
